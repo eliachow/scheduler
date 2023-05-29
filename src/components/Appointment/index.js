@@ -1,15 +1,14 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import 'components/Appointment/styles.scss'
 import Header from './Header';
 import Show from './Show';
 import Empty from './Empty';
 import Form from './Form';
 import useVisualMode from 'hooks/useVisualMode';
-import DayList from 'components/DayList';
+
 
 
 export default function Appointment(props) {
-
 
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
@@ -18,6 +17,16 @@ export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
 
 
+  function save(name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer
+    };
+    props.onSave(name, interviewer);
+    props.bookInterview(props.id, interview)
+    transition(SHOW); 
+  }
+
 
   return (
     <article className='appointment'>
@@ -25,14 +34,18 @@ export default function Appointment(props) {
       {mode === SHOW && (
         <Show 
           student={props.interview.student}
-          interviewer={props.interview.interviewer.interviewer}
+          interviewer={props.interview.interviewer}
         />
       )}
       {mode === EMPTY && (
         <Empty  onAdd={() => transition(CREATE)} />
       )}
       {mode === CREATE && (
-        <Form interviewers={[props.interviewers]} onCancel={back} />
+        <Form 
+          interviewers={props.interviewers} 
+          onCancel={back} 
+          onSave={save}
+          />
       )}
     </article>
   )
