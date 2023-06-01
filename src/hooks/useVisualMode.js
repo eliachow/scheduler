@@ -19,6 +19,7 @@ export default function useVisualMode(initial) {
     }
   }
 
+
   function back() {
     // check if the length is greater than 1 indicating there are previous modes to go back to. 
     if (history.length > 1) {

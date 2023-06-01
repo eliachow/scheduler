@@ -7,6 +7,7 @@ import Empty from './Empty';
 import Form from './Form';
 import Status from './Status';
 import useVisualMode from 'hooks/useVisualMode';
+import Confirm from './Confirm';
 
 
 // Appointment component renders the Appointment slots in the app
@@ -17,6 +18,8 @@ export default function Appointment(props) {
   const SHOW = "SHOW";
   const CREATE = "CREATE";
   const SAVING = "SAVING";
+  const DELETING = "DELETING"
+  const CONFIRM = "CONFIRM"
 
   // useVisualMode hook initializes the state of the Appointment component
   // mode = current mode
@@ -32,13 +35,38 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
-    // invoke functions received from props to update the Application (parent) component's state and make the PUT rquest to update the appointment on the server.
+    // render saving status
     transition(SAVING);
+    // invoke functions received from props to update the Application (parent) component's state and make the PUT rquest to update the appointment on the server.
     props.bookInterview(props.id, interview)
     .then(() => {
       // transition the Appointment component mode to show
     transition(SHOW);
     }) 
+    .catch(error => {
+      console.log("Error updating appointment: ", error);
+    })
+  }
+
+  function confirm() {
+    // confirm cancellation 
+    transition(CONFIRM);
+  }
+
+  // cancel the appointment
+  function cancel() {
+    // render deleting status
+    transition(DELETING);
+    // invoke the cancel interview function in the Application component from the Appointments prop, provide the appointment id as an argument
+    props.cancelInterview(props.id)
+    // once the Axios call is complete (in Application compoment) transiton to Empty
+    .then(() => {
+      transition(EMPTY);
+    })
+    // catch in the component so it's easier to provide a msg to the user on the front end
+    .catch(error => {
+      console.log("Error deleting appointment: ", error);
+    })
   }
 
 
@@ -51,6 +79,7 @@ export default function Appointment(props) {
         <Show 
           student={props.interview.student}
           interviewer={props.interview.interviewer}
+          onDelete={confirm}
         />
       )}
       {mode === EMPTY && (
@@ -66,6 +95,18 @@ export default function Appointment(props) {
       {mode === SAVING && (
         <Status 
           message="Saving..."
+        />
+      )}
+      {mode === DELETING && (
+        <Status 
+          message="Deleting..."
+        />
+      )}
+      {mode === CONFIRM && (
+        <Confirm 
+          message="Are you sure you would like to delete?"
+          onCancel={back}
+          onConfirm={cancel}
         />
       )}
     </article>
