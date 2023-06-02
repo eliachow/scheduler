@@ -8,8 +8,7 @@ import Empty from './Empty';
 import Form from './Form';
 import Status from './Status';
 import Confirm from './Confirm';
-
-
+import Error from './Error';
 
 
 // Appointment component renders the Appointment slots in the app
@@ -23,6 +22,8 @@ export default function Appointment(props) {
   const SAVING = "SAVING";
   const DELETING = "DELETING"
   const CONFIRM = "CONFIRM";
+  const ERROR_SAVE = "ERROR_SAVE";
+  const ERROR_DELETE = "ERROR_DELETE";
 
 
   // useVisualMode hook initializes the state of the Appointment component
@@ -42,14 +43,16 @@ export default function Appointment(props) {
     // render saving status
     transition(SAVING);
     // invoke functions received from props to update the Application (parent) component's state and make the PUT rquest to update the appointment on the server.
-    props.bookInterview(props.id, interview)
-    .then(() => {
-      // transition the Appointment component mode to show
-    transition(SHOW);
-    }) 
-    .catch(error => {
-      console.log("Error updating appointment: ", error);
-    })
+    props
+      .bookInterview(props.id, interview)
+      .then(() => {
+        // transition the Appointment component mode to show
+      transition(SHOW);
+      }) 
+      .catch(error => {
+        console.log("Error updating appointment: ", error);
+        transition(ERROR_SAVE, true);
+      })
   }
 
   function confirm() {
@@ -64,19 +67,21 @@ export default function Appointment(props) {
 
 
   // cancel the appointment
-  function cancel() {
+  function destroy() {
     // render deleting status
-    transition(DELETING);
+    transition(DELETING, true);
     // invoke the cancel interview function in the Application component from the Appointments prop, provide the appointment id as an argument
-    props.cancelInterview(props.id)
-    // once the Axios call is complete (in Application compoment) transiton to Empty
-    .then(() => {
-      transition(EMPTY);
-    })
-    // catch in the component so it's easier to provide a msg to the user on the front end
-    .catch(error => {
-      console.log("Error deleting appointment: ", error);
-    })
+    props
+      .cancelInterview(props.id)
+      // once the Axios call is complete (in Application compoment) transiton to Empty
+      .then(() => {
+        transition(EMPTY);
+      })
+      // catch in the component so it's easier to provide a msg to the user on the front end
+      .catch(error => {
+        console.log("Error deleting appointment: ", error);
+        transition(ERROR_DELETE, true);
+      })
   }
 
 
@@ -119,7 +124,13 @@ export default function Appointment(props) {
         <Confirm 
           message="Are you sure you would like to delete?"
           onCancel={back}
-          onConfirm={cancel}
+          onConfirm={destroy}
+        />
+      )}
+      {((mode === ERROR_SAVE) || (mode === ERROR_DELETE)) && (
+        <Error
+          message={mode === ERROR_SAVE ? "Could not save appointment" : "Could not delete appointment"}
+          onClose={back}
         />
       )}
     </article>
