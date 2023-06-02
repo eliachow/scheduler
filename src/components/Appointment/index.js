@@ -1,13 +1,15 @@
 // import dependencies
 import React from 'react';
 import 'components/Appointment/styles.scss'
+import useVisualMode from 'hooks/useVisualMode';
 import Header from './Header';
 import Show from './Show';
 import Empty from './Empty';
 import Form from './Form';
 import Status from './Status';
-import useVisualMode from 'hooks/useVisualMode';
 import Confirm from './Confirm';
+
+
 
 
 // Appointment component renders the Appointment slots in the app
@@ -17,9 +19,11 @@ export default function Appointment(props) {
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
+  const EDIT = "EDIT";
   const SAVING = "SAVING";
   const DELETING = "DELETING"
-  const CONFIRM = "CONFIRM"
+  const CONFIRM = "CONFIRM";
+
 
   // useVisualMode hook initializes the state of the Appointment component
   // mode = current mode
@@ -53,6 +57,12 @@ export default function Appointment(props) {
     transition(CONFIRM);
   }
 
+  function edit() {
+    // edit appointment
+    transition(EDIT);
+  }
+
+
   // cancel the appointment
   function cancel() {
     // render deleting status
@@ -80,16 +90,19 @@ export default function Appointment(props) {
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           onDelete={confirm}
+          onEdit={edit}
         />
       )}
       {mode === EMPTY && (
         <Empty  onAdd={() => transition(CREATE)} />
       )}
-      {mode === CREATE && (
+      {((mode === CREATE) || (mode === EDIT)) && (
         <Form 
-          interviewers={props.interviewers} 
-          onCancel={back} 
+          interviewers={props.interviewers}
+          student={props.interview ? props.interview.student : ""}
+          interviewer={props.interview && props.interview.interviewer ? props.interview.interviewer.id : null} 
           onSave={save}
+          onCancel={back}
           />
       )}
       {mode === SAVING && (

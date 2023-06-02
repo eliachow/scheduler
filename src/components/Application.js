@@ -54,22 +54,18 @@ export default function Application() {
 
     // create an empty interview object
     const interview = null;
-    console.log("👉interview: ", interview);
 
     // create a new appointment object by merging the existing appointment data with the new interview data
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
     };
-    console.log("👉appointment: ", appointment);
 
     // create a new appointments object by merging the existing appointments with the updated appointment using the id as the key
     const appointments = {
       ...state.appointments,
       [id]: appointment
     }
-    console.log("👉appointments: ", appointments)
-
 
     // make a PUT request to update the appointment on the server with the { interview } data - pass to the request body
     return Axios.delete(`/api/appointments/${id}`, { interview })
