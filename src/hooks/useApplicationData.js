@@ -12,6 +12,7 @@ export default function useApplicationData() {
     interviewers: {}
   })
 
+
   // use the spread operator to copy all properties from prevState into a new object. Set the value of the 'day' property in the new object to the value of the 'day' parameter.
   const setDay = day => setState(prevState => ({...prevState, day}));
 
@@ -23,12 +24,29 @@ export default function useApplicationData() {
       ...state.appointments[id],
       interview: { ...interview }
     };
+  
 
     // create a new appointments object by merging the existing appointments with the updated appointment using the id as the key
     const appointments = {
       ...state.appointments,
       [id]: appointment
     };
+    
+    
+    // use the spread operator to create a copy of the days array
+    const days = [...state.days];
+    // find the index for the current day
+    const dayIndex = days.findIndex(day => day.name === state.day)
+    // use the spread operator to create a copy of the day object using the index
+    const day = { ...state.days[dayIndex]};
+    
+    // check if the appointment already existed, if not, decrease the spots
+    if (!state.appointments[id].interview) {
+      day.spots--;
+    }
+    // update the modified day object in the days array
+    days[dayIndex] = day;
+
 
     
     // Make a PUT request to update the appointment on the server with the { interview }data -- pass to the request body
@@ -38,7 +56,8 @@ export default function useApplicationData() {
       // when the response comes back update the previous state using the existing state
       setState((prevState) => ({
         ...prevState,
-        appointments
+        appointments,
+        days
       }));
     })
   }
@@ -62,13 +81,30 @@ export default function useApplicationData() {
       [id]: appointment
     }
 
-    // make a PUT request to update the appointment on the server with the { interview } data - pass to the request body
+
+    // use the spread operator to create a copy of the days array
+    const days = [...state.days];
+    // find the index for the current day
+    const dayIndex = days.findIndex(day => day.name === state.day)
+    // use the spread operator to create a copy of the day object using the index
+    const day = { ...state.days[dayIndex]};
+    
+    // check if the appointment already existed, if yes, increase the spots
+    if (state.appointments[id].interview) {
+      day.spots++;
+    }
+    // update the modified day object in the days array
+    days[dayIndex] = day;
+
+
+    // make a DELETE request to update the appointment on the server with the { interview } data - pass to the request body
     return Axios.delete(`/api/appointments/${id}`, { interview })
     // when the response comes back, update the previous state using the existing state
     .then(() => {
       setState((prevState) => ({
         ...prevState,
-        appointments
+        appointments,
+        days
       }))
     })
   }
