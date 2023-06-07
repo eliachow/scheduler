@@ -1,11 +1,16 @@
 import React from "react" 
 import "components/InterviewerList.scss"
 import InterviewerListItem from "./InterviewerListItem";
+import PropTypes from 'prop-types';
 
 
 export default function InterviewerList(props) {
 
   const { interviewers, value, onChange } = props
+
+  InterviewerList.prototype = {
+    interviewers: PropTypes.array.isRequired
+  }
 
 
   // loop through interviewers list and return individual interviewer
