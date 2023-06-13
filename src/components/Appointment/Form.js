@@ -46,6 +46,7 @@ export default function Form(props) {
             value={student}
             onChange={(event) => setStudent(event.target.value)}
             data-testid="student-name-input"
+            alt="Add"
           />
         </form>
         <section className="appointment__validation">{error}</section>

@@ -87,7 +87,7 @@ export default function Appointment(props) {
 
   // Render the Appointment component
   return (
-    <article className='appointment'>
+    <article className='appointment' data-testid="appointment">
       <Header time={props.time} />
       {/* check the value of mode to determine how the Appointment will render & pass the appropriate props */}
       {mode === SHOW && (
