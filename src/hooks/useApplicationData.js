@@ -115,9 +115,9 @@ export default function useApplicationData() {
 
   // use Promise to make asynchronous requests to fetch the API data
   Promise.all([
-    Axios.get("http://localhost:8001/api/days"),
-    Axios.get("http://localhost:8001/api/appointments"),
-    Axios.get("http://localhost:8001/api/interviewers")
+    Axios.get("/api/days"),
+    Axios.get("/api/appointments"),
+    Axios.get("/api/interviewers")
   ])
   // Once all the requests are resolved, the data is stored in the component's state using the setState function
   .then(([daysResponse, appointmentsResponse, interviewersResponse]) => {
