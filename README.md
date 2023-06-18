@@ -31,6 +31,8 @@ A single page application that allows students to schedule interviews.
 
 Install dependencies with `npm install`.
 
+Clone the [scheduler-api](https://github.com/lighthouse-labs/scheduler-api) repository.
+
 ## Running Webpack Development Server
 
 ```sh
