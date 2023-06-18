@@ -32,12 +32,10 @@ describe("Appointments", () => {
   })
 
   it("should edit an interview", () => {
-    // Visits the root of our web server - handled in beforeEach()
-    // The edit button is only revealed when we hover over the appointment. When we try and click on it, it will start "waiting for actionability". We want to use the click arguments to force the action and disable "waiting for actionability"
-    // Clicks the edit button for the existing appointment
+    // Hovers over the appointment and clicks the edit button for the existing appointment, disable "waiting for actionability"
     cy.get("[alt=Edit]").first().click({ force: true });
     
-    // Changes the name and interviewer: "Tori Malcolm"
+    // Changes the name and interviewer
     cy.get("[data-testid=student-name-input]").clear().type("Lydia Miller-Jones");
     cy.get("[alt='Tori Malcolm']").click();
 

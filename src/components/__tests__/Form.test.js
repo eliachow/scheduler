@@ -33,7 +33,6 @@ describe("Form", () => {
     expect(getByTestId("student-name-input")).toHaveValue("Lydia Miller-Jones");
   });
 
-
   // #THREE --------------------------------------------------------------
   it("validates that the student name is not blank", () => {
   /* 1. Create the mock onSave function */
@@ -53,7 +52,7 @@ describe("Form", () => {
     expect(onSave).not.toHaveBeenCalled();
   });
 
-  // #SEVEN ----------------------------------------------------------------
+  // #FOUR ----------------------------------------------------------------
   it("can successfully save after trying to submit an empty student name", () => {
     const onSave = jest.fn();
     const { getByText, getByPlaceholderText, queryByText } = render(
@@ -80,7 +79,7 @@ describe("Form", () => {
       expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1);
   });
 
-  // #EIGHT ----------------------------------------------------------------
+  // #FIVE ----------------------------------------------------------------
   it("calls onCancel and resets the input field", () => {
     const onCancel = jest.fn();
 

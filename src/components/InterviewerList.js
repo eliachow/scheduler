@@ -12,8 +12,7 @@ export default function InterviewerList(props) {
     interviewers: PropTypes.array.isRequired
   }
 
-
-  // loop through interviewers list and return individual interviewer
+  // iterate over the interviewers list and return individual interviewer
   const interviewerList = interviewers.map(interviewerItem => {
     return(
       <InterviewerListItem 

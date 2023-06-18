@@ -65,7 +65,6 @@ export default function Appointment(props) {
     transition(EDIT);
   }
 
-
   // cancel the appointment
   function destroy() {
     // render deleting status
@@ -83,7 +82,6 @@ export default function Appointment(props) {
         transition(ERROR_DELETE, true);
       })
   }
-
 
   // Render the Appointment component
   return (

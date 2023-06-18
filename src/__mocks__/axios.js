@@ -1,3 +1,4 @@
+// Static date for testing mock functions
 const fixtures = {
   days: [
     {

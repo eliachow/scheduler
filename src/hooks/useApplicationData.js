@@ -12,10 +12,8 @@ export default function useApplicationData() {
     interviewers: {}
   })
 
-
   // use the spread operator to copy all properties from prevState into a new object. Set the value of the 'day' property in the new object to the value of the 'day' parameter.
   const setDay = day => setState(prevState => ({...prevState, day}));
-
 
   function bookInterview(id, interview) {
     
@@ -25,13 +23,11 @@ export default function useApplicationData() {
       interview: { ...interview }
     };
   
-
     // create a new appointments object by merging the existing appointments with the updated appointment using the id as the key
     const appointments = {
       ...state.appointments,
       [id]: appointment
     };
-    
     
     // use the spread operator to create a copy of the days array
     const days = [...state.days];
@@ -48,7 +44,6 @@ export default function useApplicationData() {
     days[dayIndex] = day;
 
 
-    
     // Make a PUT request to update the appointment on the server with the { interview }data -- pass to the request body
     // Return the whole Axios call so that the promise can be resolved.  
     return Axios.put(`/api/appointments/${id}`, { interview })
@@ -61,7 +56,6 @@ export default function useApplicationData() {
       }));
     })
   }
-
 
   // use the appointment id to find the appointment and set it's interview data to null.
   function cancelInterview(id) {
@@ -81,7 +75,6 @@ export default function useApplicationData() {
       [id]: appointment
     }
 
-
     // use the spread operator to create a copy of the days array
     const days = [...state.days];
     // find the index for the current day
@@ -96,7 +89,6 @@ export default function useApplicationData() {
     // update the modified day object in the days array
     days[dayIndex] = day;
 
-
     // make a DELETE request to update the appointment on the server with the { interview } data - pass to the request body
     return Axios.delete(`/api/appointments/${id}`, { interview })
     // when the response comes back, update the previous state using the existing state
@@ -108,7 +100,6 @@ export default function useApplicationData() {
       }))
     })
   }
-
 
   // use useEffect to perform side effects, will run when page is loaded + if there are agruments in the dependency array []
   useEffect(() => {

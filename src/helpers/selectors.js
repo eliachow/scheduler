@@ -15,7 +15,6 @@ export function getAppointmentsForDay(state, day) {
       daysAppointments.push(state.appointments[id])
     }
   }
-
   return daysAppointments;
 }
 
