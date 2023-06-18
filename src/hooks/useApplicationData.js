@@ -69,10 +69,10 @@ export default function useApplicationData() {
     // create an empty interview object
     const interview = null;
 
-    // create a new appointment object by merging the existing appointment data with the new interview data
+    // create a new appointment object by merging the existing appointment data with the null interview data
     const appointment = {
       ...state.appointments[id],
-      interview: { ...interview }
+      interview: interview
     };
 
     // create a new appointments object by merging the existing appointments with the updated appointment using the id as the key
